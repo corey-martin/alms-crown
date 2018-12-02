@@ -50,7 +50,7 @@ public class Player : Moveable {
 					Collider[] hits = Physics.OverlapSphere(pos, 0.01f, layerMask);
 
 					foreach (Collider col in hits) {
-						if (col.transform.name == "Possessions") {
+						if (col.tag == "Possessions") {
 							if (isHoldingPossessions) {
 								isHoldingPossessions = false;
 								col.transform.SetParent(level);
@@ -114,7 +114,7 @@ public class Player : Moveable {
 					// check if turning would lead to a tile clipping a wall and revert if so
 					bool canTurn = true;
 					foreach (Transform child in modelParent.transform) {
-						if (child.gameObject.tag == "Tile") {
+						if (child.gameObject.tag == "Tile" || child.gameObject.tag == "Possessions") {
 							Vector3 pos = child.position;
 							Collider[] hits = Physics.OverlapSphere(pos, 0.01f, LayerMask.GetMask("Default"));
 							foreach (Collider col in hits) {

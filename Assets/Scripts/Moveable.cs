@@ -97,7 +97,7 @@ public class Moveable : MonoBehaviour {
 			Vector3 pos = transform.position + dir + Vector3.forward;
 			Collider[] hits = Physics.OverlapSphere(pos, 0.01f, layerMask);
 			foreach (Collider col in hits) {
-				if (col.tag == "Wall" || col.transform.name == "Possessions") {
+				if (col.tag == "Wall" || col.tag == "Possessions") {
 					step = true;
 				}
 			}
@@ -118,7 +118,7 @@ public class Moveable : MonoBehaviour {
 						if (col.tag == "Wall") {
 							return false;
 						}
-						if (i == 0 && !Player.isHoldingPossessions && col.transform.name == "Possessions") {
+						if (col.tag == "Possessions" && !col.transform.IsChildOf(modelParent)) {
 							return false;
 						} 
 					}
@@ -142,6 +142,9 @@ public class Moveable : MonoBehaviour {
 						if (col.tag == "Wall") {
 							return false;
 						}
+						if (col.tag == "Possessions" && !col.transform.IsChildOf(modelParent)) {
+							return false;
+						} 
 					}
 					pos += dir;
 				}
@@ -154,6 +157,9 @@ public class Moveable : MonoBehaviour {
 				if (col.tag == "Wall") {
 					return false;
 				}
+				if (col.tag == "Possessions" && !col.transform.IsChildOf(modelParent)) {
+					return false;
+				} 
 			}
 		}
 
@@ -234,17 +240,17 @@ public class Moveable : MonoBehaviour {
 		while (shouldFall && transform.position.z < 8) {
 
 			bool possessionsAreGrounded = false;
+			Transform possessions = transform;
 
 			if (modelParent != null) {
 				foreach (Transform child in modelParent.transform) {
-					if (child.gameObject.tag == "Tile") {
-						if (child.name == "Possessions" && GroundBelow(child)) {
-							possessionsAreGrounded = true;
-							continue;
-						}
-						if (GroundBelow(child)) {
-							shouldFall = false;
-						}
+					if (child.gameObject.tag == "Tile" && GroundBelow(child)) {
+						shouldFall = false;
+					}
+					if (child.gameObject.tag == "Possessions" && GroundBelow(child)) {
+						possessionsAreGrounded = true;
+						possessions = child;
+						continue;
 					}
 				}
 			} else {
@@ -259,9 +265,8 @@ public class Moveable : MonoBehaviour {
 
 			if (shouldFall && possessionsAreGrounded) {
 				Player.isHoldingPossessions = false;
-				Transform p = GameObject.Find("Possessions").transform;
-				p.SetParent(level);
-				p.localEulerAngles = Vector3.zero;
+				possessions.SetParent(level);
+				possessions.localEulerAngles = Vector3.zero;
 			}
 
 			if (shouldFall) {
@@ -288,7 +293,7 @@ public class Moveable : MonoBehaviour {
 		Vector3 pos = point.position + Vector3.forward;
 		Collider[] hits = Physics.OverlapSphere(pos, 0.01f, LayerMask.GetMask("Default"));
 		foreach (Collider col in hits) {
-			if (col.tag == "Tile" && col.transform.name == "Possessions" || col.tag == "Wall") {
+			if (col.tag == "Possessions" || col.tag == "Wall") {
 				return true;
 			}
 		}

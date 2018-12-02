@@ -6,8 +6,8 @@ using UnityEngine;
 public class Level : EditorWindow {
 
    	int selGridInt = 0;
-    string[] selectStrings = new string[] {
-    	"None", "Empty", "Player", "Possessions", "Block A", "Block B"
+    string[] selectStringsx = new string[] {
+    	"None", "Empty", "Player", "Possessions", "Block A", "Block B", "Crate"
 	};
 
 	int rotateInt = 0;
@@ -21,6 +21,7 @@ public class Level : EditorWindow {
 	public GameObject possessionsPrefab;
 	public GameObject blockAPrefab;
 	public GameObject blockBPrefab;
+	public GameObject cratePrefab;
 
     bool isHoldingAlt = false;
 
@@ -31,7 +32,7 @@ public class Level : EditorWindow {
 
 	void OnGUI() {
 		GUILayout.Label ("Selected GameObject:", EditorStyles.boldLabel);
-        selGridInt = GUILayout.SelectionGrid(selGridInt, selectStrings, 4, GUILayout.Width(330));
+        selGridInt = GUILayout.SelectionGrid(selGridInt, selectStringsx, 4, GUILayout.Width(330));
 
 		GUILayout.Label ("GameObject Rotation (Z):", EditorStyles.boldLabel);
         rotateInt = GUILayout.SelectionGrid(rotateInt, rotateStrings, 4, GUILayout.Width(330));
@@ -77,6 +78,7 @@ public class Level : EditorWindow {
 			possessionsPrefab = EditorGUILayout.ObjectField("Possessions", possessionsPrefab, typeof(GameObject), false) as GameObject;
 			blockAPrefab = EditorGUILayout.ObjectField("Block A", blockAPrefab, typeof(GameObject), false) as GameObject;
 			blockBPrefab = EditorGUILayout.ObjectField("Block B", blockBPrefab, typeof(GameObject), false) as GameObject;
+			cratePrefab = EditorGUILayout.ObjectField("Crate", cratePrefab, typeof(GameObject), false) as GameObject;
 		}
 	}
 
@@ -134,6 +136,9 @@ public class Level : EditorWindow {
 				case 5:
 					prefab = blockBPrefab;
 					parentName = "Blocks";
+					break;
+				case 6:
+					prefab = cratePrefab;
 					break;
 				default:
 					//
@@ -214,7 +219,7 @@ public class Level : EditorWindow {
     	Debug.Log("clearing objects at position " + point);
 		Transform level = GameObject.Find("Level").transform;
 		foreach (Transform child in level) {
-			if ((child.tag == "Player" || child.name == "Possessions") && child.position == point) {
+			if ((child.tag == "Player" || child.tag == "Possessions") && child.position == point) {
 				Undo.DestroyObjectImmediate(child.gameObject);
 			} else {
 				foreach (Transform gchild in child) {

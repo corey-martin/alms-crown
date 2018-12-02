@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Wall
   - Tile
+  - Possessions
   layers:
   - Default
   - TransparentFX
