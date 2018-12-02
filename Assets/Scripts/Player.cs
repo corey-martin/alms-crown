@@ -52,11 +52,9 @@ public class Player : Moveable {
 					foreach (Collider col in hits) {
 						if (col.tag == "Possessions") {
 							if (isHoldingPossessions) {
-								isHoldingPossessions = false;
 								col.transform.SetParent(level);
 								StartCoroutine(col.transform.GetComponent<Moveable>().Fall());
 							} else {
-								isHoldingPossessions = true;
 								col.transform.SetParent(modelParent);
 								if (i == 1) {
 									col.transform.position = transform.position + facing;
@@ -143,6 +141,13 @@ public class Player : Moveable {
 						StartCoroutine(CantMove(direction));
 					}
 				}
+            }
+
+            isHoldingPossessions = false;
+            foreach (Transform child in modelParent) {
+            	if (child.gameObject.tag == "Possessions") {
+            		isHoldingPossessions = true;
+            	}
             }
 		}
 

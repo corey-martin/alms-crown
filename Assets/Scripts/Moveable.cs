@@ -49,7 +49,11 @@ public class Moveable : MonoBehaviour {
 			undoRotations.Add(modelParent.localEulerAngles);
 		} else {
 			undoRotations.Add(transform.localEulerAngles);
-			parentedStack.Add(Player.isHoldingPossessions);
+			if (transform.parent.transform.name == "Level") {
+				parentedStack.Add(false);
+			} else {
+				parentedStack.Add(true);
+			}
 		}
 		undoPositions.Add(transform.localPosition);
 	}
@@ -65,10 +69,8 @@ public class Moveable : MonoBehaviour {
 
 				parentedStack.RemoveAt(parentedStack.Count - 1);
 				if (parentedStack[parentedStack.Count - 1]) {
-					Player.isHoldingPossessions = true;
 					transform.SetParent(GameObject.Find("Player").GetComponent<Player>().modelParent);
 				} else {
-					Player.isHoldingPossessions = false;
 					transform.SetParent(level);
 				}
 			}
@@ -82,7 +84,6 @@ public class Moveable : MonoBehaviour {
 			modelParent.localEulerAngles = initialRot;
 		} else {
 			transform.localEulerAngles = initialRot;
-			Player.isHoldingPossessions = false;
 			transform.SetParent(level);
 		}
 		transform.localPosition = initialPos;
@@ -254,7 +255,7 @@ public class Moveable : MonoBehaviour {
 					}
 				}
 			} else {
-				if (!Player.isHoldingPossessions) {
+				if (transform.parent.transform.name == "Level") {
 					if (GroundBelow(transform)) {
 						shouldFall = false;
 					}
@@ -264,7 +265,6 @@ public class Moveable : MonoBehaviour {
 			}
 
 			if (shouldFall && possessionsAreGrounded) {
-				Player.isHoldingPossessions = false;
 				possessions.SetParent(level);
 				possessions.localEulerAngles = Vector3.zero;
 			}
