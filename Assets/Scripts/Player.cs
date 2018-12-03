@@ -116,7 +116,8 @@ public class Player : Moveable {
 							Vector3 pos = child.position;
 							Collider[] hits = Physics.OverlapSphere(pos, 0.01f, LayerMask.GetMask("Default"));
 							foreach (Collider col in hits) {
-								if (col.tag == "Wall") {
+								if (col.tag == "Wall" || 
+									(col.tag == "Possessions" && col.transform.parent.transform.name == "Level")) {
 									facing = originalFacing;
 									modelParent.localEulerAngles = originalAngles;
 									canTurn = false;

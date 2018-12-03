@@ -48,7 +48,6 @@ public class Moveable : MonoBehaviour {
 		if (modelParent != null) {
 			undoRotations.Add(modelParent.localEulerAngles);
 		} else {
-			undoRotations.Add(transform.localEulerAngles);
 			if (transform.parent.transform.name == "Level") {
 				parentedStack.Add(false);
 			} else {
@@ -64,9 +63,6 @@ public class Moveable : MonoBehaviour {
 				undoRotations.RemoveAt(undoRotations.Count - 1);
 				modelParent.localEulerAngles = undoRotations[undoRotations.Count - 1];
 			} else {
-				undoRotations.RemoveAt(undoRotations.Count - 1);
-				transform.localEulerAngles = undoRotations[undoRotations.Count - 1];
-
 				parentedStack.RemoveAt(parentedStack.Count - 1);
 				if (parentedStack[parentedStack.Count - 1]) {
 					transform.SetParent(GameObject.Find("Player").GetComponent<Player>().modelParent);
