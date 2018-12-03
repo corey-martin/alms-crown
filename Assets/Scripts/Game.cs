@@ -54,8 +54,7 @@ public class Game : MonoBehaviour {
 
 	void Update() {
 		if (Input.GetKeyDown("escape")) {
-			Debug.Log("quit");
-			Application.Quit();
+			SceneManager.LoadScene("menu", LoadSceneMode.Single);
 		}
 
 		if (!Moveable.isMoving && !freeze) {

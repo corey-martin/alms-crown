@@ -6,7 +6,7 @@ using UnityEngine;
 public class Level : EditorWindow {
 
    	int selGridInt = 0;
-    string[] selectStringsx = new string[] {
+    string[] selectStrings = new string[] {
     	"None", "Empty", "Player", "Possessions", "Block A", "Block B", "Crate"
 	};
 
@@ -32,7 +32,7 @@ public class Level : EditorWindow {
 
 	void OnGUI() {
 		GUILayout.Label ("Selected GameObject:", EditorStyles.boldLabel);
-        selGridInt = GUILayout.SelectionGrid(selGridInt, selectStringsx, 4, GUILayout.Width(330));
+        selGridInt = GUILayout.SelectionGrid(selGridInt, selectStrings, 4, GUILayout.Width(330));
 
 		GUILayout.Label ("GameObject Rotation (Z):", EditorStyles.boldLabel);
         rotateInt = GUILayout.SelectionGrid(rotateInt, rotateStrings, 4, GUILayout.Width(330));
