@@ -5,6 +5,10 @@ using UnityEngine.SceneManagement;
 
 public class Menu : MonoBehaviour {
 
+	void Awake() {
+        Screen.SetResolution (Screen.currentResolution.width, Screen.currentResolution.height, true);
+	}
+
 	void Update () {
 		if (Input.GetKeyDown("escape")) {
 			Debug.Log("quit");
